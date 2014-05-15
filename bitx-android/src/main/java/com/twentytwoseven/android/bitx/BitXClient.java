@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.twentytwoseven.android.bitx.model.BalanceList;
 import com.twentytwoseven.android.bitx.model.FundingAddress;
 import com.twentytwoseven.android.bitx.model.Ticker;
+import com.twentytwoseven.android.bitx.model.TransactionList;
 import com.twentytwoseven.android.bitx.util.LogUtil;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -41,9 +42,18 @@ public class BitXClient {
         mRestService = restAdapter.create(BitXService.class);
     }
 
+    /* PUBLIC API */
+
     public void ticker(Callback<Ticker> callback) {
         LogUtil.i(TAG, "API: Ticker");
         mRestService.ticker(callback);
+    }
+
+    /* PRIVATE API */
+
+    public void fundingAddress(Callback<FundingAddress> callback) {
+        LogUtil.i(TAG, "API: Funding Address");
+        mRestService.fundingAddress(mAuth, callback);
     }
 
     public void balance(Callback<BalanceList> callback) {
@@ -51,8 +61,13 @@ public class BitXClient {
         mRestService.balance(mAuth, callback);
     }
 
-    public void fundingAddress(Callback<FundingAddress> callback) {
-        LogUtil.i(TAG, "API: Funding Address");
-        mRestService.fundingAddress(mAuth, callback);
+    public void transactions(Callback<TransactionList> callback) {
+        LogUtil.i(TAG, "API: Transactions");
+        mRestService.transactions(mAuth, 0, 10, callback);
+    }
+
+    public void transactions(int offset, int limit, Callback<TransactionList> callback) {
+        LogUtil.i(TAG, "API: Transactions from %s to %s", offset, (offset + limit));
+        mRestService.transactions(mAuth, offset, limit, callback);
     }
 }
