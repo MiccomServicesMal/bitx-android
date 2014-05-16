@@ -11,9 +11,13 @@ import com.twentytwoseven.android.bitx.model.TransactionList;
 import com.twentytwoseven.android.bitx.util.LogUtil;
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
+import retrofit.client.Request;
 import retrofit.converter.GsonConverter;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 
 public class BitXClient {
     private static final String TAG = BitXClient.class.getSimpleName();
@@ -34,8 +38,20 @@ public class BitXClient {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create();
 
+        OkClient okClient = new OkClient() {
+
+            @Override
+            protected HttpURLConnection openConnection(Request request) throws IOException {
+                HttpURLConnection connection = super.openConnection(request);
+                connection.setReadTimeout(120000);
+                connection.setConnectTimeout(120000);
+                return connection;
+            }
+        };
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(URL_BASE)
+                .setClient(okClient)
                 .setConverter(new GsonConverter(gson))
                 .build();
 
