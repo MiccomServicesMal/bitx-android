@@ -21,7 +21,7 @@ import java.net.HttpURLConnection;
 
 public class BitXClient {
     private static final String TAG = BitXClient.class.getSimpleName();
-    private static final String URL_BASE = "https://bitx.co.za/api/1";
+    private static final String URL_BASE = "https://api.mybitx.com/api/1";
     private final BitXService mRestService;
     private String mAuth;
 
