@@ -1,0 +1,98 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = "com.22seven.android.bitx"
+archivesBaseName = "bitx-android"
+version = "0.1.0-SNAPSHOT"
+
+signing {
+    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.allJava
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.allSource
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+def isReleaseBuild() {
+    return version.contains("SNAPSHOT") == false
+}
+
+def getRepositoryUsername() {
+    return hasProperty('ossrhUsername') ? ossrhUsername : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('ossrhPassword') ? ossrhPassword : ""
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+            }
+
+            pom.project {
+                name 'BitX Android'
+                description 'An Android client for the BitX API. See https://bitx.co.za/api'
+                packaging 'aar'
+                url 'https://github.com/22sevengithub/bitx-android'
+                // optionally artifactId can be defined here
+//                artifactId 'bitx-android'
+
+                scm {
+                    connection 'scm:git:git@github.com:22sevengithub/bitx-android.git'
+                    developerConnection 'scm:git:git@github.com:22sevengithub/bitx-android.git'
+                    url 'git@github.com:22sevengithub/bitx-android.git'
+                }
+
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'alexkoller'
+                        name 'Alex Koller'
+                        email 'alex@22seven.com'
+                        organization = '22seven'
+                        organizationUrl 'http://www.22seven.com'
+                    }
+                    developer {
+                        id 'braamgenis'
+                        name 'Braam Genis'
+                        email 'braam@22seven.com'
+                        organization = '22seven'
+                        organizationUrl 'http://www.22seven.com'
+                    }
+                }
+            }
+        }
+    }
+}
