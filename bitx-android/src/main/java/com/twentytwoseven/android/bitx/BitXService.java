@@ -7,6 +7,7 @@ import com.twentytwoseven.android.bitx.model.TransactionList;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Header;
+import retrofit.http.POST;
 import retrofit.http.Query;
 
 public interface BitXService {
@@ -23,6 +24,11 @@ public interface BitXService {
 
     @GET("/funding_address?asset="+mAsset)
     void fundingAddress(
+            @Header("Authorization") String auth,
+            Callback<FundingAddress> callback);
+
+    @POST("/funding_address?asset="+mAsset)
+    void createFundingAddress(
             @Header("Authorization") String auth,
             Callback<FundingAddress> callback);
 

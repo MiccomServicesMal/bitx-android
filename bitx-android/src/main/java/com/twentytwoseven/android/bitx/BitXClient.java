@@ -72,6 +72,11 @@ public class BitXClient {
         mRestService.fundingAddress(mAuth, callback);
     }
 
+    public void createFundingAddress(Callback<FundingAddress> callback) {
+        LogUtil.i(TAG, "API: Create funding Address");
+        mRestService.createFundingAddress(mAuth, callback);
+    }
+
     public void balance(Callback<BalanceList> callback) {
         LogUtil.i(TAG, "API: Balance");
         mRestService.balance(mAuth, callback);
