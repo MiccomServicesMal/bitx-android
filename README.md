@@ -9,17 +9,20 @@ Todo
 ----
 
 * Publish to Maven Central
+* Sample app or test suite
 * Implement remaining API methods
   * **Order book** `GET /api/1/orderbook?pair=XBTZAR`
   * **Trades** `GET /api/1/trades?pair=XBTZAR`
   * **List orders** `GET /api/1/listorders?pair=XBTZAR`
   * **Post order** `POST /api/1/postorder`
   * **Stop order** `POST /api/1/stoporder`
-  * **Create receive address** `POST /api/1/funding_address?asset=XBT`
+  * ~~**Create receive address** `POST /api/1/funding_address?asset=XBT`~~
 
 
 Usage
 ----
+
+Compile `.aar` and include in your Android project. This will be simplified once the library has been published on Maven Central.
 
 ```java
 BitXClient client = new BitXClient("id", "secret");
