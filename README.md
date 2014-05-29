@@ -16,7 +16,6 @@ Todo
   * **List orders** `GET /api/1/listorders?pair=XBTZAR`
   * **Post order** `POST /api/1/postorder`
   * **Stop order** `POST /api/1/stoporder`
-  * ~~**Create receive address** `POST /api/1/funding_address?asset=XBT`~~
 
 
 Usage
