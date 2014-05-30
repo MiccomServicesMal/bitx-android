@@ -1,9 +1,9 @@
 BitX-Android
 ============
 
-Work in progress.
+An unofficial Android client for the BitX API. See https://bitx.co.za/api
 
-An Android client for the BitX API. See https://bitx.co.za/api
+Work in progress.
 
 Todo
 ----
