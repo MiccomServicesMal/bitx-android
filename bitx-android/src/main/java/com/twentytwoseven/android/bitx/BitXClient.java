@@ -4,10 +4,7 @@ import android.util.Base64;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.twentytwoseven.android.bitx.model.BalanceList;
-import com.twentytwoseven.android.bitx.model.FundingAddress;
-import com.twentytwoseven.android.bitx.model.Ticker;
-import com.twentytwoseven.android.bitx.model.TransactionList;
+import com.twentytwoseven.android.bitx.model.*;
 import com.twentytwoseven.android.bitx.util.LogUtil;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -65,7 +62,22 @@ public class BitXClient {
         mRestService.ticker(callback);
     }
 
+    public void orderBook(Callback<OrderBook> callback) {
+        LogUtil.i(TAG, "API: OrderBook");
+        mRestService.orderBook(callback);
+    }
+
+    public void trades(Callback<TradeList> callback) {
+        LogUtil.i(TAG, "API: Trades");
+        mRestService.trades(callback);
+    }
+
     /* PRIVATE API */
+
+    public void listOrders(Callback<OrderList> callback) {
+        LogUtil.i(TAG, "API: List Orders");
+        mRestService.listOrders(mAuth, callback);
+    }
 
     public void fundingAddress(Callback<FundingAddress> callback) {
         LogUtil.i(TAG, "API: Funding Address");

@@ -1,9 +1,6 @@
 package com.twentytwoseven.android.bitx;
 
-import com.twentytwoseven.android.bitx.model.BalanceList;
-import com.twentytwoseven.android.bitx.model.FundingAddress;
-import com.twentytwoseven.android.bitx.model.Ticker;
-import com.twentytwoseven.android.bitx.model.TransactionList;
+import com.twentytwoseven.android.bitx.model.*;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Header;
@@ -20,7 +17,18 @@ public interface BitXService {
     @GET("/ticker?pair="+mPair)
     void ticker(Callback<Ticker> callback);
 
+    @GET("/orderbook?pair="+mPair)
+    void orderBook(Callback<OrderBook> callback);
+
+    @GET("/trades?pair="+mPair)
+    void trades(Callback<TradeList> callback);
+
     /* PRIVATE API */
+
+    @GET("/listorders?pair="+mPair)
+    void listOrders(
+        @Header("Authorization") String auth,
+        Callback<OrderList> callback);
 
     @GET("/funding_address?asset="+mAsset)
     void fundingAddress(
