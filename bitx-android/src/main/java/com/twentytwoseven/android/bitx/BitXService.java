@@ -2,10 +2,7 @@ package com.twentytwoseven.android.bitx;
 
 import com.twentytwoseven.android.bitx.model.*;
 import retrofit.Callback;
-import retrofit.http.GET;
-import retrofit.http.Header;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import retrofit.http.*;
 
 public interface BitXService {
 
@@ -30,6 +27,28 @@ public interface BitXService {
         @Header("Authorization") String auth,
         Callback<OrderList> callback);
 
+    @FormUrlEncoded
+    @POST("/postorder")
+    void postOrder(
+        @Header("Authorization") String auth,
+        @Field("pair") String pair,
+        @Field("type") String type,
+        @Field("volume") String volume,
+        @Field("price") String price,
+        Callback<Order> callback);
+
+    @FormUrlEncoded
+    @POST("/stoporder")
+    void stopOrder(
+        @Header("Authorization") String auth,
+        @Field("order_id") String orderId,
+        Callback<Order> callback);
+
+    @GET("/balance?asset="+mAsset)
+    void balance(
+        @Header("Authorization") String auth,
+        Callback<BalanceList> callback);
+
     @GET("/funding_address?asset="+mAsset)
     void fundingAddress(
             @Header("Authorization") String auth,
@@ -39,11 +58,6 @@ public interface BitXService {
     void createFundingAddress(
             @Header("Authorization") String auth,
             Callback<FundingAddress> callback);
-
-    @GET("/balance?asset="+mAsset)
-    void balance(
-            @Header("Authorization") String auth,
-            Callback<BalanceList> callback);
 
     @GET("/transactions?asset="+mAsset)
     void transactions(

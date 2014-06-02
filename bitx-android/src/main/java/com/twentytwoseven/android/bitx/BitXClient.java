@@ -79,6 +79,21 @@ public class BitXClient {
         mRestService.listOrders(mAuth, callback);
     }
 
+    public void postOrder(String pair, String type, String volume, String price, Callback<Order> callback) {
+        LogUtil.i(TAG, "API: Posting Order");
+        mRestService.postOrder(mAuth, pair, type, volume, price, callback);
+    }
+
+    public void stopOrder(String orderId, Callback<Order> callback) {
+        LogUtil.i(TAG, "API: Stopping Order");
+        mRestService.stopOrder(mAuth, orderId, callback);
+    }
+
+    public void balance(Callback<BalanceList> callback) {
+        LogUtil.i(TAG, "API: Balance");
+        mRestService.balance(mAuth, callback);
+    }
+
     public void fundingAddress(Callback<FundingAddress> callback) {
         LogUtil.i(TAG, "API: Funding Address");
         mRestService.fundingAddress(mAuth, callback);
@@ -87,11 +102,6 @@ public class BitXClient {
     public void createFundingAddress(Callback<FundingAddress> callback) {
         LogUtil.i(TAG, "API: Create funding Address");
         mRestService.createFundingAddress(mAuth, callback);
-    }
-
-    public void balance(Callback<BalanceList> callback) {
-        LogUtil.i(TAG, "API: Balance");
-        mRestService.balance(mAuth, callback);
     }
 
     public void transactions(Callback<TransactionList> callback) {
