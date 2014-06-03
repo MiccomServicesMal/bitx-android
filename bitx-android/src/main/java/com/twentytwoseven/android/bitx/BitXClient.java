@@ -4,6 +4,7 @@ import android.util.Base64;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.OkHttpClient;
 import com.twentytwoseven.android.bitx.model.*;
 import com.twentytwoseven.android.bitx.util.LogUtil;
 import retrofit.Callback;
@@ -12,15 +13,24 @@ import retrofit.client.OkClient;
 import retrofit.client.Request;
 import retrofit.converter.GsonConverter;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 public class BitXClient {
     private static final String TAG = BitXClient.class.getSimpleName();
     private static final String URL_BASE = "https://api.mybitx.com/api/1";
-    private final BitXService mRestService;
+    private BitXService mRestService;
     private String mAuth;
+
+    public BitXClient() {
+        init();
+    }
 
     public BitXClient(String key, String secretKey) {
         try {
@@ -31,23 +41,45 @@ public class BitXClient {
             e.printStackTrace();
         }
 
+        init();
+    }
+
+    private void init() {
+
+        SSLContext sslContext;
+        try {
+            TrustManager[] trustManagers = new TrustManager[1];
+            trustManagers[0] = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                }
+
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+            };
+            sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustManagers, null);
+        } catch (Exception e) {
+            return;
+        }
+
+
         Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .create();
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .create();
 
-        OkClient okClient = new OkClient() {
-
-            @Override
-            protected HttpURLConnection openConnection(Request request) throws IOException {
-                HttpURLConnection connection = super.openConnection(request);
-                connection.setReadTimeout(120000);
-                connection.setConnectTimeout(120000);
-                return connection;
-            }
-        };
+        OkHttpClient httpClient = new OkHttpClient();
+        httpClient.setSslSocketFactory(sslContext.getSocketFactory());
+        OkClient okClient = new OkClient(httpClient);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(URL_BASE)
+            .setEndpoint(URL_BASE)
                 .setClient(okClient)
                 .setConverter(new GsonConverter(gson))
                 .build();
