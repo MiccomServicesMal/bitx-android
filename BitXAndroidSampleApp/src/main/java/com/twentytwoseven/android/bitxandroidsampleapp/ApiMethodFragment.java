@@ -8,39 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import com.twentytwoseven.android.bitx.model.Ticker;
-import retrofit.Callback;
+import org.json.JSONException;
+import org.json.JSONObject;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class ApiMethodFragment extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_METHOD_NAME = "method_name";
+public abstract class ApiMethodFragment extends Fragment {
 
-    private String mMethodName;
-
-    private TextView mResultTextView;
-
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static ApiMethodFragment newInstance(String methodName) {
-        ApiMethodFragment fragment = new ApiMethodFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_METHOD_NAME, methodName);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public ApiMethodFragment() {
-    }
+    protected TextView mResultTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,27 +36,43 @@ public class ApiMethodFragment extends Fragment {
         return rootView;
     }
 
-    protected void execute() {
-        ((MainActivity) getActivity()).getBitXClient().ticker(new Callback<Ticker>() {
-            @Override
-            public void success(Ticker ticker, Response response) {
+    protected abstract void execute();
+
+    protected String responseBodyInputStreamToString(Response response) {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(response.getBody().in()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
                 try {
-                    mResultTextView.setText(ticker.toString());
+                    br.close();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+        }
+        String prettyJson = sb.toString();
+        try {
+            prettyJson = new JSONObject(sb.toString()).toString(2);
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
+        return prettyJson;
+    }
 
-            @Override
-            public void failure(RetrofitError error) {
-                //shite
-            }
-        });
+    protected void handleFailure(RetrofitError error) {
+        mResultTextView.setText(error.getResponse().getReason());
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mMethodName = getArguments().getString(ARG_METHOD_NAME);
-        ((MainActivity) activity).onSectionAttached(mMethodName);
     }
 }

@@ -42,7 +42,7 @@ public interface BitXService {
     void stopOrder(
         @Header("Authorization") String auth,
         @Field("order_id") String orderId,
-        Callback<Order> callback);
+        Callback<Object> callback);
 
     @GET("/balance?asset="+mAsset)
     void balance(
@@ -54,9 +54,11 @@ public interface BitXService {
             @Header("Authorization") String auth,
             Callback<FundingAddress> callback);
 
-    @POST("/funding_address?asset="+mAsset)
+    @FormUrlEncoded
+    @POST("/funding_address")
     void createFundingAddress(
             @Header("Authorization") String auth,
+            @Field("asset") String asset,
             Callback<FundingAddress> callback);
 
     @GET("/transactions?asset="+mAsset)

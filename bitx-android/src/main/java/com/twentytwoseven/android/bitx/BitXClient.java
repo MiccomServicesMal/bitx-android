@@ -10,15 +10,12 @@ import com.twentytwoseven.android.bitx.util.LogUtil;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
-import retrofit.client.Request;
 import retrofit.converter.GsonConverter;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -80,9 +77,11 @@ public class BitXClient {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
             .setEndpoint(URL_BASE)
-                .setClient(okClient)
-                .setConverter(new GsonConverter(gson))
-                .build();
+            .setClient(okClient)
+            .setConverter(new GsonConverter(gson))
+            //FULL log level required to be able to read response body input stream :/
+            .setLogLevel(RestAdapter.LogLevel.FULL)
+            .build();
 
         mRestService = restAdapter.create(BitXService.class);
     }
@@ -116,7 +115,7 @@ public class BitXClient {
         mRestService.postOrder(mAuth, pair, type, volume, price, callback);
     }
 
-    public void stopOrder(String orderId, Callback<Order> callback) {
+    public void stopOrder(String orderId, Callback<Object> callback) {
         LogUtil.i(TAG, "API: Stopping Order");
         mRestService.stopOrder(mAuth, orderId, callback);
     }
@@ -131,9 +130,9 @@ public class BitXClient {
         mRestService.fundingAddress(mAuth, callback);
     }
 
-    public void createFundingAddress(Callback<FundingAddress> callback) {
-        LogUtil.i(TAG, "API: Create funding Address");
-        mRestService.createFundingAddress(mAuth, callback);
+    public void createFundingAddress(String asset, Callback<FundingAddress> callback) {
+        LogUtil.i(TAG, "API: Create funding Address for asset %s", asset);
+        mRestService.createFundingAddress(mAuth, asset, callback);
     }
 
     public void transactions(Callback<TransactionList> callback) {
