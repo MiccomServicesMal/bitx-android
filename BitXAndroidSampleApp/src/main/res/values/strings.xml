@@ -19,11 +19,20 @@
 
     <!-- Private -->
     <string name="list_orders">List Orders</string>
+    <string name="warning_post_order">Warning! Be very careful with this call. You are liable to pay for executed orders and they can\'t be reversed. If you have entered an API key with write access this will create a real order!</string>
     <string name="post_order">Post Order</string>
+    <string name="warning_stop_order">Warning! If you have entered an API key with write access  and a real Order ID this will stop the order!</string>
     <string name="stop_order">Stop Order</string>
     <string name="balance">Balance</string>
     <string name="get_receive_address">Receive Address</string>
     <string name="create_receive_address">Create Receive Address</string>
     <string name="transactions">Transactions</string>
+
+    <!-- Input parameters -->
+    <string name="pair">Pair</string>
+    <string name="type">Type</string>
+    <string name="volume">Volume</string>
+    <string name="price">Price</string>
+    <string name="order_id">Order ID</string>
 
 </resources>
