@@ -149,4 +149,24 @@ public class BitXClient {
         LogUtil.i(TAG, "API: Transactions from %s to %s", offset, (offset + limit));
         mRestService.transactions(mAuth, offset, limit, callback);
     }
+
+    public void listWithdrawals(Callback<WithdrawalList> callback) {
+        LogUtil.i(TAG, "API: Withdrawals");
+        mRestService.listWithdrawals(mAuth, callback);
+    }
+
+    public void requestWithdrawal(String type, String amount, Callback<Withdrawal> callback) {
+        LogUtil.i(TAG, "API: Request withdrawal of type %s for amount %s", type, amount);
+        mRestService.requestWithdrawal(mAuth, type, amount, callback);
+    }
+
+    public void getWithdrawal(String id, Callback<Withdrawal> callback) {
+        LogUtil.i(TAG, "API: Get withdrawal status");
+        mRestService.getWithdrawal(mAuth, id, callback);
+    }
+
+    public void cancelWithdrawal(String id, Callback<Withdrawal> callback) {
+        LogUtil.i(TAG, "API: Cancel withdrawal with id %s", id);
+        mRestService.cancelWithdrawal(mAuth, id, callback);
+    }
 }

@@ -34,5 +34,6 @@
     <string name="volume">Volume</string>
     <string name="price">Price</string>
     <string name="order_id">Order ID</string>
+    <string name="asset">Asset</string>
 
 </resources>

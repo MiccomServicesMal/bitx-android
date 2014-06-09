@@ -25,7 +25,8 @@ public interface BitXService {
     @GET("/listorders?pair="+mPair)
     void listOrders(
         @Header("Authorization") String auth,
-        Callback<OrderList> callback);
+        Callback<OrderList> callback
+    );
 
     @FormUrlEncoded
     @POST("/postorder")
@@ -35,37 +36,72 @@ public interface BitXService {
         @Field("type") String type,
         @Field("volume") String volume,
         @Field("price") String price,
-        Callback<Order> callback);
+        Callback<Order> callback
+    );
 
     @FormUrlEncoded
     @POST("/stoporder")
     void stopOrder(
         @Header("Authorization") String auth,
         @Field("order_id") String orderId,
-        Callback<Object> callback);
+        Callback<Object> callback
+    );
 
     @GET("/balance?asset="+mAsset)
     void balance(
         @Header("Authorization") String auth,
-        Callback<BalanceList> callback);
+        Callback<BalanceList> callback
+    );
 
     @GET("/funding_address?asset="+mAsset)
     void fundingAddress(
-            @Header("Authorization") String auth,
-            Callback<FundingAddress> callback);
+        @Header("Authorization") String auth,
+        Callback<FundingAddress> callback
+    );
 
     @FormUrlEncoded
     @POST("/funding_address")
     void createFundingAddress(
-            @Header("Authorization") String auth,
-            @Field("asset") String asset,
-            Callback<FundingAddress> callback);
+        @Header("Authorization") String auth,
+        @Field("asset") String asset,
+        Callback<FundingAddress> callback
+    );
 
     @GET("/transactions?asset="+mAsset)
     void transactions(
-            @Header("Authorization") String auth,
-            @Query("offset") int offset,
-            @Query("limit") int limit,
-            Callback<TransactionList> callback);
+        @Header("Authorization") String auth,
+        @Query("offset") int offset,
+        @Query("limit") int limit,
+        Callback<TransactionList> callback
+    );
+
+    @GET("/withdrawals")
+    void listWithdrawals(
+        @Header("Authorization") String auth,
+        Callback<WithdrawalList> callback
+    );
+
+    @FormUrlEncoded
+    @POST("/withdrawals")
+    void requestWithdrawal(
+        @Header("Authorization") String auth,
+        @Field("type") String type,
+        @Field("amount") String amount,
+        Callback<Withdrawal> callback
+    );
+
+    @GET("/withdrawals/{id}")
+    void getWithdrawal(
+        @Header("Authorization") String auth,
+        @Path("id") String id,
+        Callback<Withdrawal> callback
+    );
+
+    @DELETE("/withdrawals/{id}")
+    void cancelWithdrawal(
+        @Header("Authorization") String auth,
+        @Path("id") String id,
+        Callback<Withdrawal> callback
+    );
 
 }
