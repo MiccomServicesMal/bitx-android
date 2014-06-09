@@ -43,41 +43,11 @@ public class BitXClient {
 
     private void init() {
 
-        // This causes all certificates to be accepted as valid.
-        // This is a workaround for SSLHandshakeExceptions caused by the root certificate being
-        // included in the SSL chain.
-
-        /* SSLHandshakeException workaround start */
-        SSLContext sslContext;
-        try {
-            TrustManager[] trustManagers = new TrustManager[1];
-            trustManagers[0] = new X509TrustManager() {
-                @Override
-                public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-                }
-
-                @Override
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[0];
-                }
-            };
-            sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustManagers, null);
-        } catch (Exception e) {
-            return;
-        }
-        /* SSLHandshakeException workaround end */
-
         Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
         OkHttpClient httpClient = new OkHttpClient();
-        httpClient.setSslSocketFactory(sslContext.getSocketFactory());
         OkClient okClient = new OkClient(httpClient);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
