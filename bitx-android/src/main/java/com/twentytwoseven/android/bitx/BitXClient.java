@@ -43,6 +43,11 @@ public class BitXClient {
 
     private void init() {
 
+        // This causes all certificates to be accepted as valid.
+        // This is a workaround for SSLHandshakeExceptions caused by the root certificate being
+        // included in the SSL chain.
+
+        /* SSLHandshakeException workaround start */
         SSLContext sslContext;
         try {
             TrustManager[] trustManagers = new TrustManager[1];
@@ -65,7 +70,7 @@ public class BitXClient {
         } catch (Exception e) {
             return;
         }
-
+        /* SSLHandshakeException workaround end */
 
         Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
