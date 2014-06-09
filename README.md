@@ -9,19 +9,18 @@ Todo
 ----
 
 * Publish to Maven Central
-* Sample app or test suite
 * Implement remaining API methods
-  * **Order book** `GET /api/1/orderbook?pair=XBTZAR`
-  * **Trades** `GET /api/1/trades?pair=XBTZAR`
-  * **List orders** `GET /api/1/listorders?pair=XBTZAR`
-  * **Post order** `POST /api/1/postorder`
-  * **Stop order** `POST /api/1/stoporder`
+  * **List withdrawal requests** `GET /api/1/withdrawals`
+  * **Request a withdrawal** `POST /api/1/withdrawals`
+  * **Particular withdrawal request** `POST /api/1/withdrawals/{id}`
+  * **Cancel withdrawal request** `DELETE /api/1/withdrawals/{id}`
 
 
 Usage
 ----
 
 Compile `.aar` and include in your Android project. This will be simplified once the library has been published on Maven Central.
+Refer to BitXAndroidSampleApp.
 
 ```java
 BitXClient client = new BitXClient("id", "secret");
