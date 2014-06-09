@@ -3,10 +3,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
-apply plugin: 'android-library'
+apply plugin: 'android'
 
 repositories {
     mavenCentral()
@@ -14,18 +14,13 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '19.0.3'
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
-        minSdkVersion 8
+        minSdkVersion 14
         targetSdkVersion 19
         versionCode 1
-        versionName "0.1.0"
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        versionName "1.0"
     }
     buildTypes {
         release {
@@ -35,10 +30,17 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
-    //    compile fileTree(dir: 'libs', include: ['*.jar'])
-    //    compile 'com.android.support:appcompat-v7:19.+'
-    //    compile 'com.android.support:support-annotations:+'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:support-v4:19.+'
+    compile 'com.android.support:appcompat-v7:19.+'
+    compile 'com.twentytwoseven.android:bitx:+@aar'
     compile 'com.squareup.retrofit:retrofit:1.5.+'
     compile 'com.squareup.okhttp:okhttp:1.5.+'
 }

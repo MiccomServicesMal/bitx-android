@@ -1,1 +1,1 @@
-include ':bitx-android'
+include ':BitXAndroidSampleApp', ':bitx-android'

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="api_methods">
+        <!-- Public -->
+        <item>@string/ticker</item>
+        <item>@string/order_book</item>
+        <item>@string/trades</item>
+        <!-- Private -->
+        <item>@string/list_orders</item>
+        <item>@string/post_order</item>
+        <item>@string/stop_order</item>
+        <item>@string/balance</item>
+        <item>@string/get_receive_address</item>
+        <item>@string/create_receive_address</item>
+        <item>@string/transactions</item>
+    </string-array>
+
+</resources>
