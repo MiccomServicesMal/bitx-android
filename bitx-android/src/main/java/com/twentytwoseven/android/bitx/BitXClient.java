@@ -95,14 +95,14 @@ public class BitXClient {
         mRestService.stopOrder(mAuth, orderId, callback);
     }
 
-    public void balance(Callback<BalanceList> callback) {
+    public void balance(String asset, Callback<BalanceList> callback) {
         LogUtil.i(TAG, "API: Balance");
-        mRestService.balance(mAuth, callback);
+        mRestService.balance(mAuth, asset, callback);
     }
 
-    public void fundingAddress(Callback<FundingAddress> callback) {
+    public void fundingAddress(String asset, Callback<FundingAddress> callback) {
         LogUtil.i(TAG, "API: Funding Address");
-        mRestService.fundingAddress(mAuth, callback);
+        mRestService.fundingAddress(mAuth, asset, callback);
     }
 
     public void createFundingAddress(String asset, Callback<FundingAddress> callback) {
@@ -110,14 +110,14 @@ public class BitXClient {
         mRestService.createFundingAddress(mAuth, asset, callback);
     }
 
-    public void transactions(Callback<TransactionList> callback) {
+    public void transactions(String asset, Callback<TransactionList> callback) {
         LogUtil.i(TAG, "API: Transactions");
-        mRestService.transactions(mAuth, 0, 10, callback);
+        mRestService.transactions(mAuth, asset, "0", "10", callback);
     }
 
-    public void transactions(int offset, int limit, Callback<TransactionList> callback) {
+    public void transactions(String asset, String offset, String limit, Callback<TransactionList> callback) {
         LogUtil.i(TAG, "API: Transactions from %s to %s", offset, (offset + limit));
-        mRestService.transactions(mAuth, offset, limit, callback);
+        mRestService.transactions(mAuth, asset, offset, limit, callback);
     }
 
     public void listWithdrawals(Callback<WithdrawalList> callback) {

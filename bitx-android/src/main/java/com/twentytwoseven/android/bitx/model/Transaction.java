@@ -8,4 +8,9 @@ public class Transaction {
     public String description;
     public double amount;
     public boolean pending;
+
+    public static class Asset {
+        public static final String XBT = "XBT";
+        public static final String ZAR = "ZAR";
+    }
 }

@@ -18,22 +18,24 @@ import java.io.InputStreamReader;
 
 public abstract class ApiMethodFragment extends Fragment {
 
+    protected View mView;
+
     protected TextView mResultTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_api_method, container, false);
-        Button executeButton = (Button) rootView.findViewById(R.id.execute_button);
+        mView = inflater.inflate(R.layout.fragment_api_method, container, false);
+        Button executeButton = (Button) mView.findViewById(R.id.execute_button);
         executeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 execute();
             }
         });
-        mResultTextView = (TextView)rootView.findViewById(R.id.result_text_view);
+        mResultTextView = (TextView) mView.findViewById(R.id.result_text_view);
 
-        return rootView;
+        return mView;
     }
 
     protected abstract void execute();

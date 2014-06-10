@@ -47,15 +47,17 @@ public interface BitXService {
         Callback<Object> callback
     );
 
-    @GET("/balance?asset="+mAsset)
+    @GET("/balance")
     void balance(
         @Header("Authorization") String auth,
+        @Query("asset") String asset,
         Callback<BalanceList> callback
     );
 
-    @GET("/funding_address?asset="+mAsset)
+    @GET("/funding_address")
     void fundingAddress(
         @Header("Authorization") String auth,
+        @Query("asset") String asset,
         Callback<FundingAddress> callback
     );
 
@@ -67,11 +69,12 @@ public interface BitXService {
         Callback<FundingAddress> callback
     );
 
-    @GET("/transactions?asset="+mAsset)
+    @GET("/transactions")
     void transactions(
         @Header("Authorization") String auth,
-        @Query("offset") int offset,
-        @Query("limit") int limit,
+        @Query("asset") String asset,
+        @Query("offset") String offset,
+        @Query("limit") String limit,
         Callback<TransactionList> callback
     );
 
