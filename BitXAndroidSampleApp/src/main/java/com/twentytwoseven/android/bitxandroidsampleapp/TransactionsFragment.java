@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import com.twentytwoseven.android.bitx.model.Asset;
 import com.twentytwoseven.android.bitx.model.Transaction;
 import com.twentytwoseven.android.bitx.model.TransactionList;
 import retrofit.Callback;
@@ -27,7 +28,7 @@ public class TransactionsFragment extends ApiMethodFragment {
             View view = inflater.inflate(R.layout.view_transactions, null);
             mSpinnerAsset = (Spinner)view.findViewById(R.id.spinner_asset);
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getActivity(), android.R.layout.simple_spinner_dropdown_item);
-            adapter.addAll(Transaction.Asset.XBT, Transaction.Asset.ZAR);
+            adapter.addAll(Asset.XBT, Asset.ZAR);
             mSpinnerAsset.setAdapter(adapter);
             mEditTextOffset = (EditText)view.findViewById(R.id.edit_text_offset);
             mEditTextOffset.setText("0");
