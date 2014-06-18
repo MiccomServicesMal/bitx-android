@@ -15,7 +15,8 @@
     <!-- Public -->
     <string name="ticker">Ticker</string>
     <string name="order_book">Order Book</string>
-    <string name="trades">Trades</string>
+    <string name="recent_trades">Recent Trades</string>
+    <string name="all_trades">All Trades</string>
 
     <!-- Private -->
     <string name="list_orders">List Orders</string>

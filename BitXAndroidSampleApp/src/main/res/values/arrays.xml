@@ -5,7 +5,8 @@
         <!-- Public -->
         <item>@string/ticker</item>
         <item>@string/order_book</item>
-        <item>@string/trades</item>
+        <item>@string/recent_trades</item>
+        <item>@string/all_trades</item>
         <!-- Private -->
         <item>@string/list_orders</item>
         <item>@string/post_order</item>

@@ -18,7 +18,10 @@ public interface BitXService {
     void orderBook(Callback<OrderBook> callback);
 
     @GET("/trades?pair="+mPair)
-    void trades(Callback<TradeList> callback);
+    void recentTrades(Callback<TradeList> callback);
+
+    @GET("https://bitx.co.za/data/trades.csv?pair="+mPair)
+    void allTrades(Callback<TradeList> callback);
 
     /* PRIVATE API */
 

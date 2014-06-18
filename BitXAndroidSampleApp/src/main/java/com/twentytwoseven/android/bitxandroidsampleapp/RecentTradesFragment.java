@@ -5,11 +5,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class TradesFragment extends ApiMethodFragment {
+public class RecentTradesFragment extends ApiMethodFragment {
 
     @Override
     protected void execute() {
-        ((MainActivity) getActivity()).getBitXClient().trades(new Callback<TradeList>() {
+        ((MainActivity) getActivity()).getBitXClient().recentTrades(new Callback<TradeList>() {
             @Override
             public void success(TradeList tradeList, Response response) {
                 String prettyJson = responseBodyInputStreamToString(response);

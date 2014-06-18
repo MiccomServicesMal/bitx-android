@@ -1,5 +1,6 @@
 package com.twentytwoseven.android.bitx;
 
+import android.os.AsyncTask;
 import android.util.Base64;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -12,12 +13,11 @@ import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 import retrofit.converter.GsonConverter;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.io.UnsupportedEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class BitXClient {
     private static final String TAG = BitXClient.class.getSimpleName();
@@ -73,9 +73,55 @@ public class BitXClient {
         mRestService.orderBook(callback);
     }
 
-    public void trades(Callback<TradeList> callback) {
-        LogUtil.i(TAG, "API: Trades");
-        mRestService.trades(callback);
+    public void recentTrades(Callback<TradeList> callback) {
+        LogUtil.i(TAG, "API: Recent trades");
+        mRestService.recentTrades(callback);
+    }
+
+    //HACK: to get csv from bitx which is not part of the REST API
+    public void allTrades(final Callback<ArrayList<Trade>> callback) {
+        LogUtil.i(TAG, "API: All trades");
+
+        AsyncTask<Void, Void, ArrayList<Trade>> asyncTask = new AsyncTask<Void, Void, ArrayList<Trade>>() {
+            @Override
+            protected ArrayList<Trade> doInBackground(Void... params) {
+                OkHttpClient client = new OkHttpClient();
+                try {
+                    URL url = new URL("https://bitx.co.za/data/trades.csv?pair=XBTZAR");
+                    HttpURLConnection connection = client.open(url);
+                    connection.setUseCaches(false);
+                    connection.setRequestMethod("GET");
+                    InputStream in = connection.getInputStream();
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                    String[] fields = br.readLine().split(",");
+                    System.out.println(fields);
+                    String line;
+                    ArrayList<Trade> trades = new ArrayList<>();
+
+                    while ((line = br.readLine()) != null) {
+                        String[] values = line.split(",");
+                        Trade t = new Trade();
+                        t.timestamp = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").parse(values[0]).getTime();
+                        t.price = Double.parseDouble(values[1]);
+                        t.volume = Double.parseDouble(values[2]);
+                        trades.add(t);
+                    }
+                    in.close();
+                    return trades;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            };
+        };
+        ArrayList<Trade> response = null;
+        try {
+            response = asyncTask.execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        callback.success(response, null);
     }
 
     /* PRIVATE API */
